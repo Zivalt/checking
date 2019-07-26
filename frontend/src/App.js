@@ -10,8 +10,8 @@ class Square extends React.Component {
    }
   handle_click(){
     console.log(this.props.value)
-    const paramator = {"data" : this.props.value}
-    axios.post('http://localhost:5000/pick',paramator).then(function (response) {
+    const parameter = {"data" : this.props.value}
+    axios.post('http://localhost:5000/pick',parameter).then(function (response) {
     console.log(response);
   })
 

@@ -22,7 +22,7 @@ class Turn:
 
 
 class Position:
-    def __init__(self, x=8,y=8):
+    def __init__(self, x=8, y=8):
         self.x = x
         self.y = y
 
@@ -45,7 +45,7 @@ class Position:
 
 class Piece(Position):
     def __init__(self, x=9, y=9, color="", is_king=False):
-        self.set_position([x, y])
+        Position.__init__(self, x, y)
         self.color = color
         self.is_king = is_king
 
@@ -215,7 +215,7 @@ class Board:
     def clear_eaten(self):
         self.eaten = {}
 
-    def something(self, position):
+    def remove_piece_from_game(self, position):
         piece = self.get_piece_by_position(position)
         player = self.get_player_by_piece(piece)
         piece.set_color("")
@@ -228,13 +228,13 @@ class Board:
         self.will_be_eaten.append(position)
 
     def set_white_piece(self, piece):
-        self.white.append(piece)
+        self.white.set_pieces(piece)
 
     def set_black_piece(self, piece):
-        self.black.append(piece)
+        self.black.set_pieces(piece)
 
     def set_empty_tiles(self, piece):
-        self.empty_tiles.append(piece)
+        self.empty_tiles.set_pieces(piece)
 
     def is_piece_playable(self, piece):
         if (piece in self.get_white()) or (piece in self.get_black()):
@@ -291,7 +291,7 @@ class Board:
         row_pieces = []
         for column in range(8):
             tile = self.get_piece_by_position([row, column])
-            if tile != None:
+            if tile is not None:
                 row_pieces.append(tile.get_all_piece_information())
         return row_pieces
 
@@ -315,12 +315,6 @@ class Board:
                 self.update_piece(piece.get_position_as_list(), "")
 
 
-def create_board():
-    board = Board()
-    board.create_players()
-    return board
-
-
 class Picked:
 
     def __init__(self, piece=Piece()):
@@ -333,8 +327,9 @@ class Picked:
         self.piece = piece
 
 
-board = create_board()
-print(board.get_line_row(0))
+board = Board()
+board.create_players()
+
 chosen_piece = Picked()
 turn = Turn("X")
 output_json = {}
@@ -342,10 +337,10 @@ output_json = {}
 
 rows = {}
 @app.route("/", methods=['GET'])
-def proj():
+def board_output():
 
-    for i in range(8):
-        rows["row"+str(i)] = board.get_line_row(i)
+    for row in range(8):
+        rows["row"+str(row)] = board.get_line_row(row)
     output_json["board"] = rows
     output_json["turn"] = turn.get_player()
     return jsonify(output_json)
@@ -372,7 +367,7 @@ def post():
                     for position in eaten[key]:
                         print(position)
                         board.clean()
-                        board.something(position)
+                        board.remove_piece_from_game(position)
 
             turn.set_player()
             board.clear_eaten()
