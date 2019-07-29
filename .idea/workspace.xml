@@ -2,7 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="98598061-7f92-436b-9999-b311f2010fc6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/board.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/picked.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/piece.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/player.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/position.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/turn.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/lodash._reinterpolate/LICENSE.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/lodash._reinterpolate/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/lodash._reinterpolate/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/lodash._reinterpolate/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/lodash.template/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/lodash.template/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/lodash.template/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/lodash.template/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/lodash.templatesettings/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/lodash.templatesettings/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/lodash.templatesettings/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/lodash.templatesettings/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/api.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -126,14 +146,7 @@
       <option name="project" value="LOCAL" />
       <updated>1564159840670</updated>
     </task>
-    <task id="LOCAL-00004" summary="update">
-      <created>1564419235272</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1564419235272</updated>
-    </task>
-    <option name="localTasksCounter" value="5" />
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView">
@@ -161,7 +174,6 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="111" />
     <MESSAGE value="commit" />
-    <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit" />
   </component>
 </project>
