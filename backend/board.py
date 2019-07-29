@@ -30,23 +30,6 @@ class Board:
             else:
                 return False
 
-    def something(self, pose, piece2):
-        if (pose[0] < 7) and (pose[1] < 7) and (pose[0] > 0) and (pose[1] > 0):
-            piece = self.get_piece_by_position(pose)
-            if (self.is_piece_playable(piece)) and not (piece.get_color() == piece2.get_color()):
-                if piece2.get_x() > piece.get_x():
-                    row = piece.get_x()-1
-                else:
-                    row = piece.get_x()+1
-
-                if piece2.get_y() > piece.get_y():
-                    column = piece.get_y()-1
-                else:
-                    column = piece.get_y()+1
-                tile = self.get_piece_by_position([row, column])
-                if tile.get_color() == "":
-                    return [row, column]
-
     def get_player_by_piece(self, piece):
         if piece in self.get_white():
             return self.get_white()
@@ -159,14 +142,8 @@ class Board:
         li = []
         for position in possible_positions:
             tile = self.get_piece_by_position(position)
-            if picked_piece.get_is_king():
-                if tile.get_color() == "":
-                    li.append(position)
-                else:
-                    temp = self.something(position, picked_piece)
-                    if temp:
-                        li.append(temp)
-
+            if tile.get_color() == "":
+                li.append(position)
         return li
 
     def move_not_king(self, picked_piece, possible_positions, eat_this_turn=False):
