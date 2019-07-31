@@ -22,9 +22,10 @@ class Square extends React.Component {
     return (
       <button
         className="square"
+        style = {{color: this.props.value.color,background: square_background(this.props.row,this.props.column)}}
         id = {this.props.id}
         onClick={() =>this.handle_click()}>
-        {this.props.value.color}
+        {this.props.p}
       </button>
     );
   }
@@ -38,7 +39,7 @@ class Row extends React.Component{
     }
     render_square(i){
         return(
-            <Square key = {i} value = {is_defined_square_value(this.props.values[i])} />
+            <Square row = {this.props.id} column = {i} value = {is_defined_square_value(this.props.values[i])} p = {square_value(this.props.values[i])} />
         );
     }
     render(){
@@ -144,6 +145,43 @@ function is_defined(obj){
     }
     else{
         return false
+    }
+}
+function check_color(object,color){
+    if(object === color){
+        return true
+    }
+    return false
+}
+function square_value(obj){
+    if(is_defined(obj)){
+        const color = obj["color"]
+        if (check_color(color,"red") || check_color(color,"black")){
+            if (obj["is_king"] === true){
+                return "X"
+            }
+            else{
+                return "O"
+            }
+        }
+        else{
+            if (check_color(color,"*")){
+                return "*"
+            }
+            else{
+                return ""
+            }
+        }
+    }
+}
+function square_background(row,column){
+    if(is_defined(row) & is_defined(column)){
+        if ((row+column)%2 === 0){
+            return "white"
+        }
+        else{
+            return "blue"
+        }
     }
 }
 
