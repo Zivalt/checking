@@ -56,9 +56,9 @@ class Board:
             for column in range(8):
                 if ((row < 3)or(row > 4))and((row+column) % 2 == 0):
                     if row < 3:
-                        self.white.set_pieces(Piece(row, column, "X", is_king=False))
+                        self.white.set_pieces(Piece(row, column, "red", is_king=False))
                     elif row > 4:
-                        self.black.set_pieces(Piece(row, column, "O"))
+                        self.black.set_pieces(Piece(row, column, "black"))
                 else:
                     self.empty_tiles.set_pieces(Piece(row, column, ""))
 
@@ -109,9 +109,9 @@ class Board:
                         if not eat_turn:
                             output.append(position)
                         if bool(last_color):
-                            for k in range(index, len(possible_moves[key])):
-                                position2 = possible_moves[key][k]
-                                self.add_eaten(position2, last_position)
+                            for continue_index in range(index, len(possible_moves[key])):
+                                next_position = possible_moves[key][continue_index]
+                                self.add_eaten(next_position, last_position)
 
                             if eat_turn:
                                 output.append(position)
@@ -121,8 +121,16 @@ class Board:
 
                     last_position = position
                     last_color = piece.get_color()
-        print(self.get_eaten())
         return output
+
+    def move_king(self, picked_piece, possible_positions, eat_turn=False):
+        possible_positions = self.king_impossible_moves(picked_piece, possible_positions, eat_turn)
+        li = []
+        for position in possible_positions:
+            tile = self.get_piece_by_position(position)
+            if tile.get_color() == "":
+                li.append(position)
+        return li
 
     def eat(self, piece, tile):
         row, column = piece.get_position()
@@ -135,16 +143,6 @@ class Board:
             if piece3.get_color() == "":
                 self.add_eaten(position, tile.get_position_as_list())
                 return position
-
-    def move_king(self, picked_piece, possible_positions, eat_turn=False):
-        possible_positions = self.king_impossible_moves(picked_piece, possible_positions, eat_turn)
-        print(possible_positions)
-        li = []
-        for position in possible_positions:
-            tile = self.get_piece_by_position(position)
-            if tile.get_color() == "":
-                li.append(position)
-        return li
 
     def move_not_king(self, picked_piece, possible_positions, eat_this_turn=False):
         li = []
@@ -171,7 +169,6 @@ class Board:
 
     def update_piece(self, position, color):
         piece = self.get_piece_by_position(position)
-        print(["aaa",position,piece.get_color(),color])
         if piece.get_color() != color:
             piece.set_color(color)
 
@@ -208,7 +205,7 @@ class Board:
 
     def no_possible_move(self, color):
         pieces = None
-        if color == "X":
+        if color == "red":
             pieces = self.get_white()
         else:
             pieces = self.get_black()

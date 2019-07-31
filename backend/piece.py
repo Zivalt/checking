@@ -17,12 +17,11 @@ class Piece(Position):
         return self.is_king
 
     def set_is_king(self):
-        if (self.get_x() == 0 and self.get_color() == "O") or (self.get_x() == 7 and self.get_color() == "X"):
-            print("meow")
+        if (self.get_x() == 0 and self.get_color() == "black") or (self.get_x() == 7 and self.get_color() == "red"):
             self.is_king = True
 
     def is_player_piece(self):
-        if (self.color == "X") or (self.color == "O"):
+        if (self.color == "red") or (self.color == "black"):
             return True
         return False
 
@@ -40,13 +39,13 @@ class Piece(Position):
 
     def not_king_possible_move(self, row, column):
         moves = []
-        if self.color == "X":
+        if self.color == "red":
             if column > 0:
                 moves.append([row+1, column-1])
             if column < 7:
                 moves.append([row+1, column+1])
 
-        if self.color == "O":
+        if self.color == "black":
             if column > 0:
                 moves.append([row - 1, column - 1])
             if column < 7:
@@ -76,14 +75,14 @@ class Piece(Position):
     def possible_eat(self):
         row, column = self.get_position()
         moves = []
-        if self.color == "X":
+        if self.color == "red":
             if row < 6:
                 if column > 1:
                     moves.append([row + 2, column - 2])
                 if column < 6:
                     moves.append([row + 2, column + 2])
 
-        elif self.color == "O":
+        elif self.color == "black":
             if row > 1:
                 if column > 1:
                     moves.append([row - 2, column - 2])

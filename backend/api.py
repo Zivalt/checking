@@ -16,7 +16,7 @@ CORS(app)
 board = Board()
 board.create_players()
 chosen_piece = Picked()
-turn = Turn(player="X")
+turn = Turn(player="red")
 output_json = {}
 
 rows = {}
@@ -41,7 +41,6 @@ def post():
             board.switch_pieces(click_piece, chosen_piece.get_piece())
             board.clean()
             eaten = board.get_eaten()
-            print([eaten,"aaa"])
             board.clear_eaten()
             if not bool(eaten):
                 turn.change_player()
@@ -49,10 +48,8 @@ def post():
             else:
                 key = str(chosen_piece.get_piece().get_position_as_list())
                 if key in eaten.keys():
-                    board.clean()
                     for position in eaten[key]:
                         board.remove_piece_from_game(position)
-                    print(chosen_piece.get_piece().get_all_piece_information())
                     move = board.move(chosen_piece.get_piece(), eat_turn=True)
                     if bool(move):
                         board.update_pieces(move, "*")
@@ -65,7 +62,6 @@ def post():
         board.clean()
         chosen_piece.set_piece(click_piece)
         move = board.move(click_piece)
-        print([move, bool(move), "aaa"])
         if bool(move):
             board.update_pieces(move, "*")
         else:
@@ -74,7 +70,9 @@ def post():
     else:
         board.clean()
 
-    return jsonify(rows)
+    if board.no_possible_move(turn.get_player()):
+        return jsonify(click_piece.get_color()+"have won")
+    return jsonify("")
 
 
 app.run(port=5000, debug=True)
