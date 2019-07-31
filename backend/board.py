@@ -33,6 +33,7 @@ class Board:
     def get_player_by_piece(self, piece):
         if piece in self.get_white():
             return self.get_white()
+
         elif piece in self.get_black():
             return self.get_black()
         elif piece in self.get_empty_tiles():
