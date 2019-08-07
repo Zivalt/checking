@@ -30,6 +30,15 @@ def board_output():
     return jsonify(output_json)
 
 
+@app.route('/restart', methods=['POST'])
+def restart():
+    print("hellow")
+    board.rest()
+    board.create_players()
+    turn.set_player("red")
+    return jsonify("")
+
+
 @app.route('/pick', methods=['POST'])
 def post():
     requested_data = request.get_json()
