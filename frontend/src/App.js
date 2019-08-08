@@ -2,8 +2,6 @@ import React,{useState,useEffect} from 'react';
 import axios from 'axios'
 import './App.css';
 
-
-
 class Square extends React.Component {
   constructor(props){
     super(props);
