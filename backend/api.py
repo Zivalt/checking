@@ -32,11 +32,9 @@ def board_output():
 
 @app.route('/restart', methods=['POST'])
 def restart():
-    print("hellow")
     board.rest()
     board.create_players()
     turn.set_player("red")
-    return jsonify("")
 
 
 @app.route('/pick', methods=['POST'])
