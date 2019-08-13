@@ -5,15 +5,14 @@ import './App.css';
 class Square extends React.Component {
   constructor(props){
     super(props);
-    const state = {board : null}
+    const state = {}
     const value = this.props.value
-
    }
   handle_click(){
+    console.log(this.props.value)
     const parameter = {"data" : this.props.value}
-    axios.post('http://localhost:5000/pick',parameter).then(response => {
-    console.log(this)
-    this.props.handle_render()
+    axios.post('http://localhost:5000/pick',parameter).then(function (response) {
+    console.log(response);
   })
 
   }
@@ -40,8 +39,7 @@ class Row extends React.Component{
     }
     render_square(i){
         return(
-            <Square row = {this.props.id} column = {i} value = {is_defined_square_value(this.props.values[i])} p = {square_value(this.props.values[i])}
-             handle_render = {this.props.handle_render}/>
+            <Square row = {this.props.id} column = {i} value = {is_defined_square_value(this.props.values[i])} p = {square_value(this.props.values[i])} />
         );
     }
     render(){
@@ -67,7 +65,7 @@ class Board extends React.Component {
   render_row(i){
     return(
         <div>
-            <Row id = {i} handle_render = {this.props.handle_render} values = {is_defined_row_value(this.props.values,"row".concat(i))} />
+            <Row id = {i} values = {is_defined_row_value(this.props.values,"row".concat(i))} />
         </div>
     );
 
@@ -89,42 +87,36 @@ class Board extends React.Component {
 
 
 }
-class App extends React.Component{
-constructor(props){
-    super(props)
-    this.handle_render = this.handle_render.bind(this)}
-    state = {turn: "",board: null,count: 0}
+export default () => {
+    const [board, setBoard] = useState({})
+    const [turn, setTurn] = useState("")
 
-     handle_render(){
-        this.change_data()
-     }
-     change_data(){
-          try{
-             const fetch_data = async () => {
-                  await axios.get('http://localhost:5000/').then(response => {
-                     const data = response.data
-                     this.setState({turn:data.turn, board:data.board})
-                  })
-              }
 
-             fetch_data()
-         }catch(error){
+     useEffect(() => {
+         try{
+            const fetch_data = async () => {
+                 await axios.get('http://localhost:5000/').then(response => {
+                    const data = response.data
 
-         }
-         }
-     componentWillMount(){
-        this.change_data()
+                    setTurn(data.turn)
+                    setBoard(data.board)
+                 })
+             }
 
-     }
+            fetch_data()
+        }catch(error){
 
-    render(){
+        }
+
+     })
+
       return (
         <div>
-            <Board values = {not_null(this.state.board)} handle_render = {this.handle_render} />
-            <h1>turn of {not_null(this.state.turn)}</h1>
+            <Board values = {board} />
+            <h1>turn of {turn}</h1>
         </div>
 
-      )}
+      )
 
 
 }
@@ -137,12 +129,6 @@ function is_defined_row_value(number,index= "row0"){
         return ""
     }
 }
-function not_null(obj){
-    if(obj !== null){
-        return obj
-    }else{ return false
-    }
-    }
 function is_defined_square_value(number){
     if(is_defined(number)){
         return number
@@ -199,4 +185,4 @@ function square_background(row,column){
     }
 }
 
-export default App;
+

@@ -72,7 +72,7 @@ def post():
 
     if board.no_possible_move(turn.get_player()):
         return jsonify(click_piece.get_color()+"have won")
-    return jsonify(output_json)
+    return jsonify("")
 
 
 app.run(port=5000, debug=True)
