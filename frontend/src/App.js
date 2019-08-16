@@ -128,8 +128,9 @@ constructor(props){
     render(){
       return (
         <div>
-            <Board values = {check_if_null(this.state.board)} handle_render = {this.handle_render} />
-            <h1>turn of {check_if_null(this.state.turn)}</h1>
+            <Board values = {check_if_null(this.state.board)}
+                handle_render = {this.handle_render} />
+            <h1>turn of {check_if_null(this.state.turn)} </h1>
         </div>
 
       )}
