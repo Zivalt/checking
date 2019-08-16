@@ -23,10 +23,12 @@ class Square extends React.Component {
     return (
       <button
         className="square"
-        style = {{color: this.props.value.color,background: square_background(this.props.row,this.props.column)}}
+        style = {{color: this.props.value.color,
+        background: square_background(this.props.row,this.props.column)}}
         id = {this.props.id}
-        onClick={() =>this.handle_click()}>
-        {this.props.p}
+        onClick={() =>this.handle_click()}
+       >
+        {this.props.color}
       </button>
     );
   }
@@ -40,8 +42,12 @@ class Row extends React.Component{
     }
     render_square(i){
         return(
-            <Square row = {this.props.id} column = {i} value = {is_defined_square_value(this.props.values[i])} p = {square_value(this.props.values[i])}
-             handle_render = {this.props.handle_render}/>
+            <Square 
+                row = {this.props.id}
+                column = {i} 
+                value = {is_defined_square_value(this.props.values[i])} 
+                color = {square_value(this.props.values[i])}
+                handle_render = {this.props.handle_render}/>
         );
     }
     render(){
@@ -67,7 +73,9 @@ class Board extends React.Component {
   render_row(i){
     return(
         <div>
-            <Row id = {i} handle_render = {this.props.handle_render} values = {is_defined_row_value(this.props.values,"row".concat(i))} />
+            <Row id = {i}
+             handle_render = {this.props.handle_render}
+             values = {is_defined_row_value(this.props.values,"row".concat(i))} />
         </div>
     );
 
@@ -120,8 +128,8 @@ constructor(props){
     render(){
       return (
         <div>
-            <Board values = {temp(this.state.board)} handle_render = {this.handle_render} />
-            <h1>turn of {temp(this.state.turn)}</h1>
+            <Board values = {check_if_null(this.state.board)} handle_render = {this.handle_render} />
+            <h1>turn of {check_if_null(this.state.turn)}</h1>
         </div>
 
       )}
@@ -137,11 +145,14 @@ function is_defined_row_value(number,index= "row0"){
         return ""
     }
 }
-function temp(obj){
+function check_if_null(obj){
     if(obj !== null){
         return obj
-    }else{ return false
     }
+    else
+        {
+         return false
+        }
     }
 function is_defined_square_value(number){
     if(is_defined(number)){
