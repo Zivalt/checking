@@ -41,6 +41,14 @@ class Board:
         else:
             return False
 
+    def get_player_by_color(self,color):
+        if color == "black":
+            return self.get_black()
+        elif color == "white":
+            return self.get_white()
+        else:
+            return self.get_empty_tiles()
+
     def get_all_pieces(self):
         all_pieces = []
         white_pieces = self.get_white()
@@ -70,7 +78,7 @@ class Board:
         piece = self.get_piece_by_position(position)
         player = self.get_player_by_piece(piece)
         piece.set_color("")
-        if player:
+        if bool(player):
             piece.set_color("")
             player.remove(piece)
             self.empty_tiles.set_pieces(piece)
@@ -135,11 +143,11 @@ class Board:
 
     def eat(self, piece, tile):
         row, column = piece.get_position()
-        row2, column2 = tile.get_position()
-        row3 = (row2-row)*2+row
-        column3 = (column2-column)*2+column
-        if not (row3 > 7 or column3 > 7 or row3 < 0 or column3 < 0):
-            position = [row3, column3]
+        enemy_row, enemy_column = tile.get_position()
+        behind_enemy_row = (enemy_row-row)*2+row
+        behind_enemy_column = (enemy_column-column)*2+column
+        if not (behind_enemy_row > 7 or behind_enemy_column > 7 or behind_enemy_row < 0 or behind_enemy_column < 0):
+            position = [behind_enemy_row, behind_enemy_column]
             piece3 = self.get_piece_by_position(position)
             if piece3.get_color() == "":
                 self.add_eaten(position, tile.get_position_as_list())
@@ -214,3 +222,8 @@ class Board:
             if bool(self.move(piece)):
                 return False
         return True
+
+    def rest(self):
+        self.white = Player()
+        self.black = Player()
+        self.empty_tiles = Player()

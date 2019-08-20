@@ -128,15 +128,21 @@ constructor(props){
     render(){
       return (
         <div>
-            <Board values = {check_if_null(this.state.board)}
-                handle_render = {this.handle_render} />
-            <h1>turn of {check_if_null(this.state.turn)} </h1>
+            <Board values = {board} />
+            <h1>turn of {turn}</h1>
+            <button onClick = {() => create_new_board()}>start new game</button>
+
         </div>
 
       )}
 
 
 }
+function create_new_board(){
+   axios.post('http://localhost:5000/restart')
+}
+
+
 
 function is_defined_row_value(number,index= "row0"){
     if (is_defined(number[index])){
