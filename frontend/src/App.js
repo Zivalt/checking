@@ -5,14 +5,15 @@ import './App.css';
 class Square extends React.Component {
   constructor(props){
     super(props);
-    const state = {}
+    const state = {board : null}
     const value = this.props.value
+
    }
   handle_click(){
-    console.log(this.props.value)
     const parameter = {"data" : this.props.value}
-    axios.post('http://localhost:5000/pick',parameter).then(function (response) {
-    console.log(response);
+    axios.post('http://localhost:5000/pick',parameter).then(response => {
+    console.log(this)
+    this.props.handle_render()
   })
 
   }
@@ -22,10 +23,12 @@ class Square extends React.Component {
     return (
       <button
         className="square"
-        style = {{color: this.props.value.color,background: square_background(this.props.row,this.props.column)}}
+        style = {{color: this.props.value.color,
+        background: square_background(this.props.row,this.props.column)}}
         id = {this.props.id}
-        onClick={() =>this.handle_click()}>
-        {this.props.p}
+        onClick={() =>this.handle_click()}
+       >
+        {this.props.color}
       </button>
     );
   }
@@ -39,7 +42,12 @@ class Row extends React.Component{
     }
     render_square(i){
         return(
-            <Square row = {this.props.id} column = {i} value = {is_defined_square_value(this.props.values[i])} p = {square_value(this.props.values[i])} />
+            <Square 
+                row = {this.props.id}
+                column = {i} 
+                value = {is_defined_square_value(this.props.values[i])} 
+                color = {square_value(this.props.values[i])}
+                handle_render = {this.props.handle_render}/>
         );
     }
     render(){
@@ -65,7 +73,9 @@ class Board extends React.Component {
   render_row(i){
     return(
         <div>
-            <Row id = {i} values = {is_defined_row_value(this.props.values,"row".concat(i))} />
+            <Row id = {i}
+             handle_render = {this.props.handle_render}
+             values = {is_defined_row_value(this.props.values,"row".concat(i))} />
         </div>
     );
 
@@ -87,37 +97,44 @@ class Board extends React.Component {
 
 
 }
-export default () => {
-    const [board, setBoard] = useState({})
-    const [turn, setTurn] = useState("")
+class App extends React.Component{
+constructor(props){
+    super(props)
+    this.handle_render = this.handle_render.bind(this)}
+    state = {turn: "",board: null,count: 0}
 
+     handle_render(){
+        this.change_data()
+     }
+     change_data(){
+          try{
+             const fetch_data = async () => {
+                  await axios.get('http://localhost:5000/').then(response => {
+                     const data = response.data
+                     this.setState({turn:data.turn, board:data.board})
+                  })
+              }
 
-     useEffect(() => {
-         try{
-            const fetch_data = async () => {
-                 await axios.get('http://localhost:5000/').then(response => {
-                    const data = response.data
+             fetch_data()
+         }catch(error){
 
-                    setTurn(data.turn)
-                    setBoard(data.board)
-                 })
-             }
+         }
+         }
+     componentWillMount(){
+        this.change_data()
 
-            fetch_data()
-        }catch(error){
+     }
 
-        }
-
-     })
-
+    render(){
       return (
         <div>
             <Board values = {board} />
             <h1>turn of {turn}</h1>
             <button onClick = {() => create_new_board()}>start new game</button>
+
         </div>
 
-      )
+      )}
 
 
 }
@@ -135,6 +152,15 @@ function is_defined_row_value(number,index= "row0"){
         return ""
     }
 }
+function check_if_null(obj){
+    if(obj !== null){
+        return obj
+    }
+    else
+        {
+         return false
+        }
+    }
 function is_defined_square_value(number){
     if(is_defined(number)){
         return number
@@ -191,4 +217,4 @@ function square_background(row,column){
     }
 }
 
-
+export default App;
