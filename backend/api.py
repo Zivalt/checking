@@ -35,7 +35,7 @@ def restart():
     board.rest()
     board.create_players()
     turn.set_player("red")
-    return ""
+    return "OK"
 
 
 @app.route('/pick', methods=['POST'])
