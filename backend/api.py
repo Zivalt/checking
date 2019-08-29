@@ -32,10 +32,10 @@ def board_output():
 
 @app.route('/restart', methods=['GET'])
 def restart():
-    board.rest()
+    board.reset()
     board.create_players()
     turn.set_player("red")
-    return ""
+    return "OK"
 
 
 @app.route('/pick', methods=['POST'])

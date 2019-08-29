@@ -223,7 +223,7 @@ class Board:
                 return False
         return True
 
-    def rest(self):
+    def reset(self):
         self.white = Player()
         self.black = Player()
         self.empty_tiles = Player()

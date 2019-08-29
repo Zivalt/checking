@@ -103,13 +103,13 @@ constructor(props){
     }
 
      handle_render(){
-        this.change_data()
+        this.fetch_board_data()
      }
      create_new_board(){
         fetch('http://localhost:5000/restart')
-        this.change_data()
+        this.fetch_board_data()
      }
-     change_data(){
+     fetch_board_data(){
           try{
              const fetch_data = async () => {
                   await axios.get('http://localhost:5000/').then(response => {
@@ -125,7 +125,7 @@ constructor(props){
          }
          }
      componentWillMount(){
-        this.change_data()
+        this.fetch_board_data()
 
      }
 
