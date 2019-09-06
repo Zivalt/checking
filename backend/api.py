@@ -30,11 +30,12 @@ def board_output():
     return jsonify(output_json)
 
 
-@app.route('/restart', methods=['POST'])
+@app.route('/restart', methods=['GET'])
 def restart():
-    board.rest()
+    board.reset()
     board.create_players()
     turn.set_player("red")
+    return "OK"
 
 
 @app.route('/pick', methods=['POST'])

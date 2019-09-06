@@ -5,14 +5,12 @@ import './App.css';
 class Square extends React.Component {
   constructor(props){
     super(props);
-    const state = {board : null}
     const value = this.props.value
 
    }
   handle_click(){
     const parameter = {"data" : this.props.value}
     axios.post('http://localhost:5000/pick',parameter).then(response => {
-    console.log(this)
     this.props.handle_render()
   })
 
@@ -42,10 +40,10 @@ class Row extends React.Component{
     }
     render_square(i){
         return(
-            <Square 
+            <Square
                 row = {this.props.id}
-                column = {i} 
-                value = {is_defined_square_value(this.props.values[i])} 
+                column = {i}
+                value = {is_defined_square_value(this.props.values[i])}
                 color = {square_value(this.props.values[i])}
                 handle_render = {this.props.handle_render}/>
         );
@@ -100,18 +98,24 @@ class Board extends React.Component {
 class App extends React.Component{
 constructor(props){
     super(props)
-    this.handle_render = this.handle_render.bind(this)}
-    state = {turn: "",board: null,count: 0}
+    this.handle_render = this.handle_render.bind(this)
+    this.state = {turn: "",board: null,count: 0}
+    }
 
      handle_render(){
-        this.change_data()
+        this.fetch_board_data()
      }
-     change_data(){
+     create_new_board(){
+        fetch('http://localhost:5000/restart')
+        this.fetch_board_data()
+     }
+     fetch_board_data(){
           try{
              const fetch_data = async () => {
                   await axios.get('http://localhost:5000/').then(response => {
                      const data = response.data
                      this.setState({turn:data.turn, board:data.board})
+                     console.log(this.state)
                   })
               }
 
@@ -121,16 +125,19 @@ constructor(props){
          }
          }
      componentWillMount(){
-        this.change_data()
+        this.fetch_board_data()
 
      }
 
     render(){
       return (
         <div>
-            <Board values = {board} />
-            <h1>turn of {turn}</h1>
-            <button onClick = {() => create_new_board()}>start new game</button>
+            <Board
+                values = {check_if_null(this.state.board)}
+                handle_render = {this.handle_render}
+             />
+            <h1>turn of {this.state.turn}</h1>
+            <button onClick = {() => this.create_new_board()}>start new game</button>
 
         </div>
 
@@ -138,9 +145,7 @@ constructor(props){
 
 
 }
-function create_new_board(){
-   axios.post('http://localhost:5000/restart')
-}
+
 
 
 
