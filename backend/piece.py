@@ -2,10 +2,11 @@ from backend.position import Position
 
 
 class Piece(Position):
-    def __init__(self, x=9, y=9, color="", is_king=False):
+    def __init__(self, x, y, color, is_king=False, is_picked=False):
         Position.__init__(self, x, y)
         self.color = color
         self.is_king = is_king
+        self.is_picked = is_picked
 
     def get_color(self):
         return self.color
@@ -17,8 +18,15 @@ class Piece(Position):
         return self.is_king
 
     def set_is_king(self):
-        if (self.get_x() == 0 and self.get_color() == "black") or (self.get_x() == 7 and self.get_color() == "red"):
+        if (self.get_x() == 0 and self.get_color() == "black")\
+                or (self.get_x() == 7 and self.get_color() == "red"):
             self.is_king = True
+
+    def get_is_picked(self):
+        return self.is_picked
+
+    def set_is_picked(self, flag):
+        self.is_picked = flag
 
     def is_player_piece(self):
         if (self.color == "red") or (self.color == "black"):
@@ -32,60 +40,52 @@ class Piece(Position):
 
     def possible_move(self):
         row, column = self.get_position()
-        if self.get_is_king():
-            return self.king_possible_move(row, column)
-        else:
+        if not self.get_is_king():
             return self.not_king_possible_move(row, column)
+        else:
+            return king_possible_move(row, column)
 
     def not_king_possible_move(self, row, column):
-        moves = []
-        if self.color == "red":
-            if column > 0:
-                moves.append([row+1, column-1])
-            if column < 7:
-                moves.append([row+1, column+1])
+        if self.get_color() == "red":
+            return red_possible_move(row, column)
+        elif self.get_color() == "black":
+            return black_possible_move(row, column)
 
-        if self.color == "black":
-            if column > 0:
-                moves.append([row - 1, column - 1])
-            if column < 7:
-                moves.append([row - 1, column + 1])
-        return moves
 
-    def king_possible_move(self, row, column):
-        possible_moves = {}
-        for i in range(4):
-            possible_moves[i] = []
-        for i in range(1, 7, 1):
-            print(row+i > 7 or column+i > 7) and (row - i < 0 or column-i < 0)
-            if not (row+i > 7) and (column+i > 7) and (row - i < 0) and (column-i < 0):
-                break
-            else:
-                if(row + i <= 7) and (column + i <= 7):
-                    possible_moves[0].append([row+i, column+i])
-                if(row + i <= 7) and (column - i >= 0):
-                    possible_moves[1].append([row+i, column-i])
-                if(row - i >= 0) and (column + i <= 7):
-                    possible_moves[2].append([row - i, column + i])
-                if(row - i >= 0) and (column - i >= 0):
-                    possible_moves[3].append([row - i, column - i])
+def king_possible_move(row, column):
 
-        return possible_moves
+    return (red_possible_move(row, column))\
+             +(black_possible_move(row, column))
 
-    def possible_eat(self):
-        row, column = self.get_position()
-        moves = []
-        if self.color == "red":
-            if row < 6:
-                if column > 1:
-                    moves.append([row + 2, column - 2])
-                if column < 6:
-                    moves.append([row + 2, column + 2])
 
-        elif self.color == "black":
-            if row > 1:
-                if column > 1:
-                    moves.append([row - 2, column - 2])
-                if column < 6:
-                    moves.append([row - 2, column + 2])
-        return moves
+def something(li):
+    if not li == []:
+        if isinstance(li[0], list):
+            return li
+        else:
+            return [li]
+
+
+def red_possible_move(row, column):
+    moves = [position_bounds(row + 1, column + 1),
+             position_bounds(row + 1, column - 1)]
+    return list(filter(None, moves))
+
+
+def black_possible_move(row, column):
+    moves = [position_bounds(row - 1, column + 1),
+             position_bounds(row - 1, column - 1)]
+    return list(filter(None, moves))
+
+
+def position_bounds(row, column):
+    if num_in_bound(row):
+        if num_in_bound(column):
+            return [row, column]
+
+
+def num_in_bound(number):
+    if 0 <= number <= 7:
+        return True
+    return False
+
