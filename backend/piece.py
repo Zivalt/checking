@@ -58,14 +58,6 @@ def king_possible_move(row, column):
              +(black_possible_move(row, column))
 
 
-def something(li):
-    if not li == []:
-        if isinstance(li[0], list):
-            return li
-        else:
-            return [li]
-
-
 def red_possible_move(row, column):
     moves = [position_bounds(row + 1, column + 1),
              position_bounds(row + 1, column - 1)]
