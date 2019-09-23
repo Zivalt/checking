@@ -20,7 +20,8 @@ constructor(props){
      fetch_board_data(){
           try{
              const fetch_data = async () => {
-                  await axios.get('http://localhost:5000/').then(response => {
+                  await axios.get('http://localhost:5000/').then(
+                  response => {
                      const data = response.data
                      this.setState({turn:data.turn, board:data.board})
                      console.log(this.state)
@@ -28,7 +29,7 @@ constructor(props){
               }
 
              fetch_data()
-         }catch(error){
+          }catch(error){
 
          }
          }
@@ -45,7 +46,10 @@ constructor(props){
                 handle_render = {this.handle_render}
              />
             <h1>turn of {this.state.turn}</h1>
-            <button onClick = {() => this.create_new_board()}>start new game</button>
+            <button
+                onClick = {() => this.create_new_board()}>
+                start new game
+            </button>
 
         </div>
 
@@ -110,20 +114,23 @@ function square_value(obj, y){
     if(piece != ""){
         var color = piece["color"]
         if (check_color(color,"red") || check_color(color,"black")){
-            if (piece["is_king"] === true){
-                return "X"
-            }
-            else{
-                return "O"
-            }
-        }
+            return player_piece()
+           }
         else{
             if (check_color(color,"*")){
                 return "*"
             }
         }
-    }
     return ""
+}
+
+function player_piece(){
+    if (piece["is_king"] === true){
+        return "X"
+    }
+    else{
+        return "O"
+    }
 }
 
 
@@ -131,8 +138,8 @@ function get_position(obj, y){
     if (obj !== ""){
         for(var i = 0;i <= 3; i++){
             if (is_defined(obj[i])){
-                var s2 = obj[i]["position"][1]
-                if(s2 === y){
+                var column = obj[i]["position"][1]
+                if(column === y){
                     return obj[i]
                 }
             }

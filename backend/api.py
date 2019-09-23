@@ -60,11 +60,11 @@ def moving_turn(chosen_piece, click_piece):
         click_piece.get_position())
     board.switch_pieces(chosen_piece, click_piece)
     board.clean()
-    if flag:
+    if bool(flag):
         board.remove_piece(flag)
 
     eaten = board.move(chosen_piece, eat_turn=True)
-    if bool(eaten) and flag:
+    if bool(eaten) and bool(flag):
         additional_jumps(eaten, chosen_piece)
     else:
         no_jumps(chosen_piece)

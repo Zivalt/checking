@@ -43,8 +43,8 @@ class Board:
 
     def eat(self, position_one, position_two):
         jump_position = [
-            difference(position_one[0], position_two[0]),
-            difference(position_one[1], position_two[1])]
+            jump_value(position_one[0], position_two[0]),
+            jump_value(position_one[1], position_two[1])]
         jump_piece = self.get_piece_by_position(jump_position)
         if not (jump_piece in self.get_pieces())\
                 and position_bounds(
@@ -78,13 +78,14 @@ class Board:
         return row_pieces
 
     def get_piece_by_position(self, position):
-        for piece in self.get_pieces()+self.get_empty_pieces():
+        for piece in \
+                self.get_pieces() + self.get_empty_pieces():
             if position == piece.get_position_as_list():
                 return piece
         return None
 
     def switch_pieces(self, piece_one, piece_two):
-        piece_one.set_position(piece_two.get_position_as_list())
+        piece_one.set_position(piece_two.get_position())
         piece_one.set_is_king()
 
     def clean(self):
@@ -143,7 +144,7 @@ class Board:
         return li
 
 
-def difference(num, num2):
+def jump_value(num, num2):
     return num2*2-num
 
 
